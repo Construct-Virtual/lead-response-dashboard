@@ -9,6 +9,7 @@ export async function GET() {
         'ngrok-skip-browser-warning': 'true',
         'Accept': 'application/json',
       },
+      cache: 'no-cache',
     });
 
     if (!response.ok) {
