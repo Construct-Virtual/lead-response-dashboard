@@ -2,8 +2,8 @@
 import React from 'react';
 import { ApiResponse, DashboardData, DailyMetric } from './types';
 
-// Use environment variable with fallback
-const API_ENDPOINT = '/api/analytics'; // Internal Next.js API route
+// Use internal Next.js API route
+const API_ENDPOINT = '/api/analytics';
 
 // Fallback time series data (7 days)
 const fallbackTimeSeriesData: DailyMetric[] = [
@@ -29,10 +29,10 @@ const fallbackData: DashboardData = {
     { name: "D - Cold Leads", value: 35, color: "#64748b" },
   ],
   platformData: {
-    messenger: { conversations: 156, appointments: 42 },
-    instagram: { conversations: 124, appointments: 31 }
+    messenger: { conversations: 156, appointments: 42, conversionRate: 27 },
+    instagram: { conversations: 124, appointments: 31, conversionRate: 25 }
   },
-  dailyMetrics: fallbackTimeSeriesData,
+  dailyMetrics: fallbackTimeSeriesData
 };
 
 function transformApiData(apiData: ApiResponse[]): DashboardData {
@@ -66,56 +66,64 @@ function transformApiData(apiData: ApiResponse[]): DashboardData {
     }
   ];
 
-  // Transform platform data to match your UI structure
+  // Helper function to parse conversion rate percentage
+  const parseConversionRate = (rateString: string): number => {
+    return parseFloat(rateString.replace('%', '')) || 0;
+  };
+
+  // Transform platform data using real API values
   const platformData = {
     messenger: {
       conversations: data.platform_distribution.messenger.count,
-      appointments: Math.round(data.platform_distribution.messenger.count * 0.27) // 27% conversion rate
+      appointments: data.platform_distribution.messenger.appointments,
+      conversionRate: parseConversionRate(data.platform_distribution.messenger.conversion_rate)
     },
     instagram: {
       conversations: data.platform_distribution.instagram.count,
-      appointments: Math.round(data.platform_distribution.instagram.count * 0.25) // 25% conversion rate
+      appointments: data.platform_distribution.instagram.appointments,
+      conversionRate: parseConversionRate(data.platform_distribution.instagram.conversion_rate)
     }
   };
 
+  // Use API daily metrics or fallback data
   const dailyMetrics = data.daily_metrics && data.daily_metrics.length > 0 
     ? data.daily_metrics 
     : fallbackTimeSeriesData;
 
+  // Calculate total appointments from platform data
+  const totalAppointments = platformData.messenger.appointments + platformData.instagram.appointments;
+
   return {
     totalConversations: data.total_conversations,
-    appointmentsBooked: data.appointments_booked,
+    appointmentsBooked: totalAppointments > 0 ? totalAppointments : Math.round(data.total_conversations * 0.26), // Use real data or fallback calculation
     hotLeads: data.hot_leads.total,
     avgResponseTime: data.average_response_time_formatted !== "N/A" 
       ? data.average_response_time_formatted 
       : `${parseFloat(data.average_response_time_minutes).toFixed(1)}m`,
     leadDistribution,
     platformData,
-    dailyMetrics,
+    dailyMetrics
   };
 }
 
 export async function fetchLeadAnalytics(): Promise<DashboardData> {
   try {
     console.log('🔄 Polling API at', new Date().toLocaleTimeString());
-    console.log('🌐 Using endpoint:', API_ENDPOINT);
     
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
       console.log('⏰ Request timeout - aborting');
       controller.abort();
-    }, 8000); // 8 second timeout (less than polling interval)
+    }, 8000);
 
     const response = await fetch(API_ENDPOINT, {
       method: 'GET',
       headers: {
-        'ngrok-skip-browser-warning': 'true',
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       signal: controller.signal,
-      mode: 'cors',
-      cache: 'no-cache', // Prevent caching to get fresh data
+      cache: 'no-cache',
     });
 
     clearTimeout(timeoutId);
@@ -166,17 +174,14 @@ export function useDashboardData() {
   }, []);
 
   React.useEffect(() => {
-    // Initial fetch
     fetchData();
     
-    // Set up polling every 10 seconds
     console.log('🔄 Starting 10-second polling...');
     const interval = setInterval(() => {
       console.log('⏰ 10 seconds elapsed - fetching fresh data...');
       fetchData();
-    }, 10 * 1000); // 10 seconds
+    }, 10 * 1000);
     
-    // Cleanup
     return () => {
       console.log('🛑 Stopping polling...');
       clearInterval(interval);

@@ -17,14 +17,20 @@ export interface ApiResponse {
     instagram: {
       count: number;
       percentage: string;
+      appointments: number;
+      conversion_rate: string;
     };
     messenger: {
       count: number;
       percentage: string;
+      appointments: number;
+      conversion_rate: string;
     };
-    other: {
+    other?: {
       count: number;
       percentage: string;
+      appointments?: number;
+      conversion_rate?: string;
     };
   };
   lead_distribution: {
@@ -70,10 +76,12 @@ export interface DashboardData {
     messenger?: {
       conversations: number;
       appointments: number;
+      conversionRate: number;
     };
     instagram?: {
       conversations: number;
       appointments: number;
+      conversionRate: number;
     };
   };
   dailyMetrics: DailyMetric[];

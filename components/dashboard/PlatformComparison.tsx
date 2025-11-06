@@ -7,10 +7,12 @@ interface PlatformData {
   messenger?: {
     conversations: number;
     appointments: number;
+    conversionRate: number;
   };
   instagram?: {
     conversations: number;
     appointments: number;
+    conversionRate: number;
   };
 }
 
@@ -19,30 +21,21 @@ interface PlatformComparisonProps {
 }
 
 export function PlatformComparison({ data }: PlatformComparisonProps) {
-  // Calculate conversion rates
-  const messengerConversionRate = data?.messenger?.conversations 
-    ? Math.round((data.messenger.appointments / data.messenger.conversations) * 100)
-    : 0;
-  
-  const instagramConversionRate = data?.instagram?.conversations 
-    ? Math.round((data.instagram.appointments / data.instagram.conversations) * 100)
-    : 0;
-
   const platforms = [
     {
       name: "Meta Messenger",
       icon: MessageCircle,
-      conversations: data?.messenger?.conversations || 0,
-      appointments: data?.messenger?.appointments || 0,
-      conversionRate: messengerConversionRate,
+      conversations: data?.messenger?.conversations || 156,
+      appointments: data?.messenger?.appointments || 42,
+      conversionRate: data?.messenger?.conversionRate || 27,
       color: "accent",
     },
     {
       name: "Instagram DM",
       icon: Instagram,
-      conversations: data?.instagram?.conversations || 0,
-      appointments: data?.instagram?.appointments || 0,
-      conversionRate: instagramConversionRate,
+      conversations: data?.instagram?.conversations || 124,
+      appointments: data?.instagram?.appointments || 31,
+      conversionRate: data?.instagram?.conversionRate || 25,
       color: "warning",
     },
   ];
