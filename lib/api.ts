@@ -2,7 +2,8 @@
 import React from 'react';
 import { ApiResponse, DashboardData } from './types';
 
-const API_ENDPOINT = 'https://tumultuously-starchlike-leta.ngrok-free.dev/webhook/lead-analytics-4fbd-b561-a4b550511f2e';
+// Use environment variable with fallback
+const API_ENDPOINT = '/api/analytics'; // Internal Next.js API route
 
 // Fallback data (your current hardcoded values)
 const fallbackData: DashboardData = {
@@ -80,6 +81,7 @@ function transformApiData(apiData: ApiResponse[]): DashboardData {
 export async function fetchLeadAnalytics(): Promise<DashboardData> {
   try {
     console.log('🔄 Polling API at', new Date().toLocaleTimeString());
+    console.log('🌐 Using endpoint:', API_ENDPOINT);
     
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
