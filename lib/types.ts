@@ -1,5 +1,6 @@
 export interface ApiResponse {
   total_conversations: number;
+  appointments_booked: number;
   hot_leads: {
     total: number;
     percentage: string;

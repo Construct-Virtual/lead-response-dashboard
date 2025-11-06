@@ -68,7 +68,7 @@ function transformApiData(apiData: ApiResponse[]): DashboardData {
 
   return {
     totalConversations: data.total_conversations,
-    appointmentsBooked: Math.round(data.total_conversations * 0.26),
+    appointmentsBooked: data.appointments_booked,
     hotLeads: data.hot_leads.total,
     avgResponseTime: data.average_response_time_formatted !== "N/A" 
       ? data.average_response_time_formatted 
