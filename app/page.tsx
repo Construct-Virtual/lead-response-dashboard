@@ -84,7 +84,7 @@ export default function Home() {
 
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <ConversationTimeline />
+          <ConversationTimeline data={data.dailyMetrics} />
           <LeadQualityChart data={data.leadDistribution} />
         </div>
 
@@ -97,4 +97,3 @@ export default function Home() {
     </div>
   );
 }
-

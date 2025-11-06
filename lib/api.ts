@@ -1,9 +1,20 @@
 "use client";
 import React from 'react';
-import { ApiResponse, DashboardData } from './types';
+import { ApiResponse, DashboardData, DailyMetric } from './types';
 
 // Use environment variable with fallback
 const API_ENDPOINT = '/api/analytics'; // Internal Next.js API route
+
+// Fallback time series data (7 days)
+const fallbackTimeSeriesData: DailyMetric[] = [
+  { date: '2025-11-01', dayName: 'Mon', conversations: 65, appointments: 28 },
+  { date: '2025-11-02', dayName: 'Tue', conversations: 59, appointments: 31 },
+  { date: '2025-11-03', dayName: 'Wed', conversations: 80, appointments: 42 },
+  { date: '2025-11-04', dayName: 'Thu', conversations: 81, appointments: 45 },
+  { date: '2025-11-05', dayName: 'Fri', conversations: 56, appointments: 38 },
+  { date: '2025-11-06', dayName: 'Sat', conversations: 49, appointments: 35 },
+  { date: '2025-11-07', dayName: 'Sun', conversations: 42, appointments: 25 },
+];
 
 // Fallback data (your current hardcoded values)
 const fallbackData: DashboardData = {
@@ -20,7 +31,8 @@ const fallbackData: DashboardData = {
   platformData: {
     messenger: { conversations: 156, appointments: 42 },
     instagram: { conversations: 124, appointments: 31 }
-  }
+  },
+  dailyMetrics: fallbackTimeSeriesData,
 };
 
 function transformApiData(apiData: ApiResponse[]): DashboardData {
@@ -66,6 +78,10 @@ function transformApiData(apiData: ApiResponse[]): DashboardData {
     }
   };
 
+  const dailyMetrics = data.daily_metrics && data.daily_metrics.length > 0 
+    ? data.daily_metrics 
+    : fallbackTimeSeriesData;
+
   return {
     totalConversations: data.total_conversations,
     appointmentsBooked: data.appointments_booked,
@@ -74,7 +90,8 @@ function transformApiData(apiData: ApiResponse[]): DashboardData {
       ? data.average_response_time_formatted 
       : `${parseFloat(data.average_response_time_minutes).toFixed(1)}m`,
     leadDistribution,
-    platformData
+    platformData,
+    dailyMetrics,
   };
 }
 

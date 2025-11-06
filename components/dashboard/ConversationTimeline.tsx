@@ -2,18 +2,23 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { DailyMetric } from '@/lib/types';
 
-const data = [
-  { name: 'Mon', conversations: 65, appointments: 28 },
-  { name: 'Tue', conversations: 59, appointments: 31 },
-  { name: 'Wed', conversations: 80, appointments: 42 },
-  { name: 'Thu', conversations: 81, appointments: 45 },
-  { name: 'Fri', conversations: 56, appointments: 38 },
-  { name: 'Sat', conversations: 49, appointments: 35 },
-  { name: 'Sun', conversations: 42, appointments: 25 },
+interface ConversationTimelineProps {
+  data?: DailyMetric[];
+}
+
+const defaultData: DailyMetric[] = [
+  { date: '2025-11-01', dayName: 'Mon', conversations: 65, appointments: 28 },
+  { date: '2025-11-02', dayName: 'Tue', conversations: 59, appointments: 31 },
+  { date: '2025-11-03', dayName: 'Wed', conversations: 80, appointments: 42 },
+  { date: '2025-11-04', dayName: 'Thu', conversations: 81, appointments: 45 },
+  { date: '2025-11-05', dayName: 'Fri', conversations: 56, appointments: 38 },
+  { date: '2025-11-06', dayName: 'Sat', conversations: 49, appointments: 35 },
+  { date: '2025-11-07', dayName: 'Sun', conversations: 42, appointments: 25 },
 ];
 
-export function ConversationTimeline() {
+export function ConversationTimeline({ data = defaultData }: ConversationTimelineProps) {
   return (
     <Card className="glass-card p-6">
       <CardHeader className="pb-4">
@@ -34,7 +39,7 @@ export function ConversationTimeline() {
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis 
-              dataKey="name" 
+              dataKey="dayName" 
               axisLine={false}
               tickLine={false}
               tick={{ fill: 'hsl(var(--muted-foreground))' }}
@@ -50,6 +55,13 @@ export function ConversationTimeline() {
                 border: "1px solid hsl(var(--border))",
                 borderRadius: "0.5rem",
                 color: "hsl(var(--card-foreground))",
+              }}
+              labelFormatter={(value, payload) => {
+                if (payload && payload[0]) {
+                  const dataPoint = payload[0].payload;
+                  return `${dataPoint.dayName}, ${dataPoint.date}`;
+                }
+                return value;
               }}
             />
             <Area

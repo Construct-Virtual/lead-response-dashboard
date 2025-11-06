@@ -1,3 +1,11 @@
+export interface DailyMetric {
+  date: string;
+  dayName: string;
+  conversations: number;
+  appointments: number;
+}
+
+
 export interface ApiResponse {
   total_conversations: number;
   appointments_booked: number;
@@ -45,6 +53,7 @@ export interface ApiResponse {
   average_response_time_formatted: string;
   response_time_data_points: number;
   timestamp: string;
+  daily_metrics: DailyMetric[];
 }
 
 export interface DashboardData {
@@ -67,4 +76,5 @@ export interface DashboardData {
       appointments: number;
     };
   };
+  dailyMetrics: DailyMetric[];
 }
