@@ -25,17 +25,17 @@ export function PlatformComparison({ data }: PlatformComparisonProps) {
     {
       name: "Meta Messenger",
       icon: MessageCircle,
-      conversations: data?.messenger?.conversations || 156,
-      appointments: data?.messenger?.appointments || 42,
-      conversionRate: data?.messenger?.conversionRate || 27,
+      conversations: data?.messenger?.conversations,
+      appointments: data?.messenger?.appointments,
+      conversionRate: data?.messenger?.conversionRate,
       color: "accent",
     },
     {
       name: "Instagram DM",
       icon: Instagram,
-      conversations: data?.instagram?.conversations || 124,
-      appointments: data?.instagram?.appointments || 31,
-      conversionRate: data?.instagram?.conversionRate || 25,
+      conversations: data?.instagram?.conversations,
+      appointments: data?.instagram?.appointments,
+      conversionRate: data?.instagram?.conversionRate,
       color: "warning",
     },
   ];
