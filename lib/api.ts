@@ -18,19 +18,19 @@ const fallbackTimeSeriesData: DailyMetric[] = [
 
 // Fallback data (your current hardcoded values)
 const fallbackData: DashboardData = {
-  totalConversations: 89,
-  appointmentsBooked: 23,
-  hotLeads: 28,
-  avgResponseTime: "2.3m",
+  totalConversations: 0,
+  appointmentsBooked: 0,
+  hotLeads: 0,
+  avgResponseTime: "0m",
   leadDistribution: [
-    { name: "A - Hot Leads", value: 28, color: "#ef4444" },
-    { name: "B - Warm Leads", value: 45, color: "#f97316" },
-    { name: "C - Cool Leads", value: 62, color: "#3b82f6" },
-    { name: "D - Cold Leads", value: 35, color: "#64748b" },
+    { name: "A - Hot Leads", value: 0, color: "#ef4444" },
+    { name: "B - Warm Leads", value: 0, color: "#f97316" },
+    { name: "C - Cool Leads", value: 0, color: "#3b82f6" },
+    { name: "D - Cold Leads", value: 0, color: "#64748b" },
   ],
   platformData: {
-    messenger: { conversations: 156, appointments: 42, conversionRate: 27 },
-    instagram: { conversations: 124, appointments: 31, conversionRate: 25 }
+    messenger: { conversations: 0, appointments: 0, conversionRate: 0 },
+    instagram: { conversations: 0, appointments: 0, conversionRate: 0 }
   },
   dailyMetrics: fallbackTimeSeriesData
 };
