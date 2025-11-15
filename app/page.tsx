@@ -6,6 +6,7 @@ import { ConversationTimeline } from "@/components/dashboard/ConversationTimelin
 import { LeadQualityChart } from "@/components/dashboard/LeadQualityChart";
 import { PlatformComparison } from "@/components/dashboard/PlatformComparison";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
+import { LeadTable } from "@/components/dashboard/LeadTable";
 import { MessageCircle, Calendar, Star, Clock, RefreshCw, AlertCircle } from "lucide-react";
 import { useDashboardData } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -89,9 +90,14 @@ export default function Home() {
         </div>
 
         {/* Platform & Activity Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <PlatformComparison data={data.platformData} />
           {/* <RecentActivity /> */}
+        </div>
+
+        {/* Lead Table Section */}
+        <div className="mb-8">
+          <LeadTable leads={data.leads} />
         </div>
       </div>
     </div>

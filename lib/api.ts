@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { ApiResponse, DashboardData, DailyMetric } from './types';
+import { ApiResponse, DashboardData, DailyMetric, Lead } from './types';
 
 // Use internal Next.js API route
 const API_ENDPOINT = '/api/analytics';
@@ -14,6 +14,18 @@ const fallbackTimeSeriesData: DailyMetric[] = [
   { date: '2025-11-05', dayName: 'Fri', conversations: 56, appointments: 38 },
   { date: '2025-11-06', dayName: 'Sat', conversations: 49, appointments: 35 },
   { date: '2025-11-07', dayName: 'Sun', conversations: 42, appointments: 25 },
+];
+
+// Fallback lead data
+const fallbackLeads: Lead[] = [
+  { id: '1', name: 'John Smith', score: 95, grade: 'A', platform: 'messenger' },
+  { id: '2', name: 'Sarah Johnson', score: 92, grade: 'A', platform: 'instagram' },
+  { id: '3', name: 'Mike Davis', score: 85, grade: 'B', platform: 'messenger' },
+  { id: '4', name: 'Emma Wilson', score: 78, grade: 'B', platform: 'instagram' },
+  { id: '5', name: 'James Brown', score: 65, grade: 'C', platform: 'messenger' },
+  { id: '6', name: 'Lisa Anderson', score: 88, grade: 'B', platform: 'instagram' },
+  { id: '7', name: 'Robert Taylor', score: 45, grade: 'D', platform: 'messenger' },
+  { id: '8', name: 'Jennifer White', score: 72, grade: 'C', platform: 'instagram' },
 ];
 
 // Fallback data (your current hardcoded values)
@@ -32,7 +44,8 @@ const fallbackData: DashboardData = {
     messenger: { conversations: 0, appointments: 0, conversionRate: 0 },
     instagram: { conversations: 0, appointments: 0, conversionRate: 0 }
   },
-  dailyMetrics: fallbackTimeSeriesData
+  dailyMetrics: fallbackTimeSeriesData,
+  leads: fallbackLeads
 };
 
 function transformApiData(apiData: ApiResponse[]): DashboardData {
@@ -102,7 +115,8 @@ function transformApiData(apiData: ApiResponse[]): DashboardData {
       : `${parseFloat(data.average_response_time_minutes).toFixed(1)}m`,
     leadDistribution,
     platformData,
-    dailyMetrics
+    dailyMetrics,
+    leads: fallbackLeads // Use fallback leads for now, can be extended to use API data
   };
 }
 
