@@ -5,6 +5,14 @@ export interface DailyMetric {
   appointments: number;
 }
 
+export interface Lead {
+  id: string;
+  name: string;
+  score: number;
+  grade: 'A' | 'B' | 'C' | 'D';
+  platform: 'messenger' | 'instagram';
+}
+
 
 export interface ApiResponse {
   total_conversations: number;
@@ -85,4 +93,5 @@ export interface DashboardData {
     };
   };
   dailyMetrics: DailyMetric[];
+  leads: Lead[];
 }
